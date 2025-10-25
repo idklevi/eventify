@@ -1,1 +1,258 @@
+/* --- Root Variables (Refined Design System) --- */
+:root {
+    --primary-color: #6a11cb; /* Deeper purple */
+    --primary-gradient: linear-gradient(to right, #6a11cb, #2575fc); /* Purple to blue gradient */
+    --primary-hover: #5a0eae;
+    --secondary-bg: #f4f7fc;  /* Slightly cooler light grey background */
+    --card-bg: #ffffff;
+    --text-dark: #343a40; /* Standard dark grey */
+    --text-light: #6c757d;
+    --border-color: #e9ecef; /* Lighter border */
+    --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --success-color: #198754;
+    --danger-color: #dc3545;
+}
 
+/* --- Base & Typography --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--secondary-bg); /* Use the cooler grey */
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-size: 0.95rem; /* Slightly smaller base font */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: #2c3e50; /* Darker blue-grey for headings */
+}
+
+.content-wrap {
+    flex: 1;
+}
+
+/* --- Navbar --- */
+.navbar {
+    border-bottom: 1px solid var(--border-color);
+}
+.navbar-brand.logo {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.6rem; /* Slightly larger logo */
+}
+.navbar-brand.logo .bi {
+    margin-right: 6px;
+    vertical-align: -2px; /* Align icon better */
+}
+.navbar .nav-link {
+    font-weight: 500;
+    color: var(--text-dark);
+    transition: color 0.2s ease;
+}
+.navbar .nav-link:hover {
+    color: var(--primary-color);
+}
+.navbar .nav-link.active {
+    color: var(--primary-color) !important;
+    font-weight: 600;
+}
+.navbar .btn {
+    padding: 0.4rem 0.8rem; /* Smaller navbar buttons */
+    font-size: 0.9rem;
+}
+
+
+/* --- Buttons --- */
+.btn {
+    border-radius: 0.3rem; /* Standard rounded corners */
+    transition: all 0.2s ease-in-out;
+    font-weight: 500;
+}
+.btn-primary {
+    background: var(--primary-gradient); /* Use gradient */
+    border: none;
+    color: white;
+    padding: 0.6rem 1.3rem;
+}
+.btn-primary:hover {
+    opacity: 0.9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    padding: 0.6rem 1.3rem;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+    color: white;
+}
+.btn-outline-secondary {
+    border-color: var(--border-color);
+    color: var(--text-light);
+}
+.btn-outline-secondary:hover {
+    background-color: var(--secondary-bg);
+    border-color: #ced4da;
+    color: var(--text-dark);
+}
+.btn-outline-danger {
+     border-color: var(--danger-color);
+     color: var(--danger-color);
+}
+.btn-outline-danger:hover {
+     background-color: var(--danger-color);
+     color: white;
+}
+.btn i { /* Space icon from text */
+    margin-right: 5px;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    background: var(--card-bg);
+    border-radius: 15px; /* More rounded */
+    padding: 4rem 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+.hero-section h1 {
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+.hero-section .lead {
+    color: var(--text-light);
+    margin-bottom: 2rem;
+}
+.hero-section .btn-primary {
+    font-size: 1.1rem;
+    padding: 0.8rem 2rem;
+}
+
+
+/* --- Event Card --- */
+.event-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color); /* Add subtle border */
+    border-radius: 10px; /* Consistent rounding */
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+    overflow: hidden;
+    display: flex; /* Ensure consistent height behavior */
+    flex-direction: column;
+}
+.event-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: #adb5bd; /* Darker border on hover */
+}
+.card-img-top {
+    width: 100%;
+    height: 200px; /* Reduced height slightly */
+    object-fit: cover;
+    border-bottom: 1px solid var(--border-color); /* Separator line */
+}
+.event-card .card-body {
+    padding: 1.25rem; /* Consistent padding */
+    flex-grow: 1; /* Make body grow to fill space */
+    display: flex;
+    flex-direction: column;
+}
+.event-card .card-title {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+.event-card .card-text {
+    color: var(--text-light);
+    font-size: 0.9rem; /* Slightly smaller text */
+    margin-bottom: 1rem;
+    flex-grow: 1; /* Allow description to push organiser down */
+}
+.event-card .organiser-info {
+     font-size: 0.85rem;
+     color: var(--text-light);
+     margin-bottom: 0.75rem; /* Space before list */
+}
+.event-card .list-group-item {
+    border-color: var(--border-color);
+    color: var(--text-dark);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.25rem; /* Adjust padding */
+}
+.event-card .bi {
+    color: var(--primary-color);
+    margin-right: 10px; /* More space for icons */
+    font-size: 1rem;
+    vertical-align: -1px;
+}
+.event-card .card-footer { /* Style the action button area */
+    background-color: #fcfdff; /* Very light background for footer */
+    border-top: 1px solid var(--border-color);
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+}
+.event-card .card-footer .btn,
+.event-card .card-footer form .btn { /* Target buttons directly and within forms */
+    margin: 0 0.25rem; /* Add small margin between buttons */
+}
+.event-card .badge {
+    font-weight: 600;
+}
+
+/* --- Form --- */
+.form-card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+.form-card .form-label {
+    font-weight: 600;
+    margin-bottom: 0.3rem; /* Less space below label */
+}
+.form-card .form-control,
+.form-card .form-select {
+    padding: 0.6rem 1rem; /* Adjust padding */
+    font-size: 0.95rem;
+    border-radius: 0.3rem;
+}
+.form-card .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.2); /* Use primary color shade */
+}
+.form-card .form-text {
+    font-size: 0.85rem;
+}
+.form-card hr {
+    margin: 2rem 0;
+}
+.form-card h5 { /* Event type/volunteer heading */
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* --- Profile Page --- */
+.profile-card .form-control-plaintext {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 1rem;
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: #ffffff;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+}
