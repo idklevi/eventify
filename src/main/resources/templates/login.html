@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/header :: page_head('Login')}" />
+    <style>
+        .login-container {
+            max-width: 450px;
+            margin-top: 5vh;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand logo" th:href="@{/}">
+                <i class="bi bi-calendar2-heart-fill"></i> Eventify
+            </a>
+        </div>
+    </nav>
+    
+    <div class="content-wrap">
+        <div class="container login-container">
+            <div class="form-card">
+                <h2 class="text-center">Welcome Back!</h2>
+                <p class="text-center text-muted mb-4">Sign in to continue</p>
+
+                <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                    Invalid email or password.
+                </div>
+                <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                    You have been logged out.
+                </div>
+                 <div th:if="${param.register_success}" class="alert alert-success" role="alert">
+                    Registration successful! Please sign in.
+                </div>
+
+                <form th:action="@{/login}" method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Email</label>
+                        <input type="email" id="username" name="username" class="form-control" placeholder="you@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+                    </div>
+                </form>
+                <hr>
+                <div class="text-center">
+                    Don't have an account? <a th:href="@{/register}">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="~{fragments/footer :: page_footer}"></div>
+</body>
+</html>
