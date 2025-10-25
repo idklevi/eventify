@@ -1,0 +1,77 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package com.example.eventmanagement;
+
+import jakarta.validation.Valid;
+import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class AuthController {
+   private final UserService userService;
+   private final UserRepository userRepository;
+   private final RegistrationRepository registrationRepository;
+
+   public AuthController(UserService userService, UserRepository userRepository, RegistrationRepository registrationRepository) {
+      this.userService = userService;
+      this.userRepository = userRepository;
+      this.registrationRepository = registrationRepository;
+   }
+
+   @GetMapping({"/login"})
+   public String viewLoginPage() {
+      return "login";
+   }
+
+   @GetMapping({"/register"})
+   public String showRegistrationForm(Model model) {
+      model.addAttribute("user", new User());
+      return "register";
+   }
+
+   @PostMapping({"/register"})
+   public String processRegistration(@ModelAttribute("user") @Valid User user, BindingResult result, @RequestParam("role") String role, Model model) {
+      if (result.hasErrors()) {
+         return "register";
+      } else {
+         try {
+            this.userService.registerUser(user, role);
+            return "redirect:/login?register_success";
+         } catch (RuntimeException var6) {
+            model.addAttribute("errorMessage", var6.getMessage());
+            return "register";
+         }
+      }
+   }
+
+   @GetMapping({"/profile"})
+   public String viewProfilePage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+      String email = userDetails.getUsername();
+      User currentUser = (User)this.userRepository.findByEmail(email).orElseThrow(() -> {
+         return new RuntimeException("User not found for email: " + email);
+      });
+      model.addAttribute("user", currentUser);
+      return "profile";
+   }
+
+   @GetMapping({"/my-registrations"})
+   @PreAuthorize("hasAuthority('ROLE_USER')")
+   public String viewMyRegistrations(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+      String email = userDetails.getUsername();
+      User currentUser = (User)this.userRepository.findByEmail(email).orElseThrow(() -> {
+         return new RuntimeException("User not found for email: " + email);
+      });
+      List<Registration> userRegistrations = this.registrationRepository.findByUserId(currentUser.getId());
+      model.addAttribute("userName", currentUser.getName());
+      model.addAttribute("registrations", userRegistrations);
+      return "my_registrations";
+   }
+}
