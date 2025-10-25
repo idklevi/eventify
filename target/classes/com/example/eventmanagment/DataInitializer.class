@@ -1,0 +1,36 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package com.example.eventmanagement;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class DataInitializer implements CommandLineRunner {
+   private final RoleRepository roleRepository;
+
+   public DataInitializer(RoleRepository roleRepository) {
+      this.roleRepository = roleRepository;
+   }
+
+   public void run(String... args) throws Exception {
+      Role adminRole;
+      if (this.roleRepository.findByName("ROLE_USER") == null) {
+         adminRole = new Role();
+         adminRole.setName("ROLE_USER");
+         this.roleRepository.save(adminRole);
+      }
+
+      if (this.roleRepository.findByName("ROLE_ORGANISER") == null) {
+         adminRole = new Role();
+         adminRole.setName("ROLE_ORGANISER");
+         this.roleRepository.save(adminRole);
+      }
+
+      if (this.roleRepository.findByName("ROLE_ADMIN") == null) {
+         adminRole = new Role();
+         adminRole.setName("ROLE_ADMIN");
+         this.roleRepository.save(adminRole);
+      }
+
+   }
+}
