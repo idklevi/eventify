@@ -1,0 +1,43 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package com.example.eventmanagement;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@Controller
+public class RegistrationController {
+   private final RegistrationRepository registrationRepository;
+   private final UserRepository userRepository;
+   private final EventRepository eventRepository;
+
+   public RegistrationController(RegistrationRepository registrationRepository, UserRepository userRepository, EventRepository eventRepository) {
+      this.registrationRepository = registrationRepository;
+      this.userRepository = userRepository;
+      this.eventRepository = eventRepository;
+   }
+
+   @PostMapping({"/register-for-event/{eventId}"})
+   @PreAuthorize("hasAuthority('ROLE_USER')")
+   public String registerForEvent(@PathVariable("eventId") Long eventId, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
+      User user = (User)this.userRepository.findByEmail(userDetails.getUsername()).orElseThrow(() -> {
+         return new RuntimeException("User not found");
+      });
+      Event event = (Event)this.eventRepository.findById(eventId).orElseThrow(() -> {
+         return new RuntimeException("Event not found");
+      });
+      if (this.registrationRepository.existsByUserIdAndEventId(user.getId(), event.getId())) {
+         redirectAttributes.addFlashAttribute("errorMessage", "You are already registered for '" + event.getName() + "'.");
+         return "redirect:/";
+      } else {
+         Registration registration = new Registration(user, event);
+         this.registrationRepository.save(registration);
+         redirectAttributes.addFlashAttribute("successMessage", "Successfully registered for '" + event.getName() + "'!");
+         return "redirect:/";
+      }
+   }
+}
