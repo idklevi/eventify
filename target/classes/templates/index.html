@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:replace="~{fragments/header :: page_head('Home')}" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <div th:replace="~{fragments/header :: navbar(activePage='home')}"></div>
+
+    <div class="content-wrap">
+        <div class="container my-5">
+
+            <div class="hero-section">
+                <h1 class="display-5">Discover Your Next Event</h1>
+                <p class="lead text-muted">Browse and share amazing events happening near you.</p>
+
+                <a th:href="@{/register}" class="btn btn-primary btn-lg"
+                   sec:authorize="!isAuthenticated()">
+                    <i class="bi bi-person-plus-fill"></i> Register Now
+                </a>
+
+                 <a th:href="@{/showNewEventForm}" class="btn btn-primary btn-lg"
+                   sec:authorize="hasAuthority('ROLE_ORGANISER')">
+                    <i class="bi bi-plus-circle-fill"></i> Create Your Event
+                </a>
+
+                </div>
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span th:text="${successMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <span th:text="${errorMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <h2 class="mb-4">Upcoming Events</h2>
+
+            <div th:if="${allEvents.isEmpty()}" class="alert alert-info shadow-sm border-0">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                No events found. Be the first to create one!
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="col" th:each="event : ${allEvents}">
+                    <div class="card h-100 event-card">
+                        <span th:if="${event.isPaid()}" class="badge text-bg-primary fs-6 position-absolute top-0 end-0 m-2"
+                              th:text="'$' + ${#numbers.formatDecimal(event.price, 1, 2)}">
+                        </span>
+                        <span th:unless="${event.isPaid()}" class="badge text-bg-success fs-6 position-absolute top-0 end-0 m-2">
+                              FREE
+                        </span>
+
+                        <img th:src="${event.imageUrl}" class="card-img-top" alt="Event Image"
+                             onerror="this.src='https://via.placeholder.com/600x400.png?text=Event+Image';">
+
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${event.name}">Event Name</h5>
+                            <p class="card-text" th:text="${event.description}">
+                                Event description.
+                            </p>
+                            <div class="organiser-info mt-auto pt-2">
+                                 <small th:if="${event.organiser != null}">
+                                    Organised by: <span th:text="${event.organiser.name}" class="fw-medium"></span>
+                                </small>
+                                 <small th:unless="${event.organiser != null}">
+                                    Organised by: Unknown
+                                </small>
+                            </div>
+                        </div>
+
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="bi bi-geo-alt-fill"></i>
+                                <span th:text="${event.location}"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-calendar-event-fill"></i>
+                                <span th:text="${#temporals.format(event.date, 'dd MMMM yyyy')}"></span>
+                            </li>
+                        </ul>
+
+                        <div class="card-footer">
+                            <form th:action="@{/register-for-event/{eventId}(eventId=${event.id})}" method="post" class="d-inline" sec:authorize="hasAuthority('ROLE_USER')">
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-check-circle-fill"></i> Register
+                                </button>
+                            </form>
+                            <a th:href="@{/login}" class="btn btn-primary btn-sm" sec:authorize="!isAuthenticated()">
+                                <i class="bi bi-box-arrow-in-right"></i> Login to Register
+                            </a>
+                            <a th:href="@{/editEvent/{id}(id=${event.id})}" class="btn btn-outline-secondary btn-sm"
+                               sec:authorize="isAuthenticated()"
+                               th:if="${event.organiser != null and #authentication.name == event.organiser.email}">
+                                <i class="bi bi-pencil-fill"></i> Edit
+                            </a>
+                            <form th:action="@{/deleteEvent/{id}(id=${event.id})}" method="post" class="d-inline"
+                                sec:authorize="isAuthenticated()"
+                                th:if="${event.organiser != null and #authentication.name == event.organiser.email}"
+                                onsubmit="return confirm('Are you sure you want to delete this event? This action cannot be undone.');">
+                                <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> </div> </div> <div th:replace="~{fragments/footer :: page_footer}"></div>
+
+</body>
+</html>
