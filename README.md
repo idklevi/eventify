@@ -2,6 +2,15 @@
 
 A web application for managing and discovering events, built with Java and Spring Boot.
 
+## 👥 Team Members
+
+| Name              | Roll No.     | Register No.  |
+|-------------------|---------------|----------------|
+| FEBA A PANICKER   | 25            | KSD24CS071     |
+| NEERAJ RAJEEV     | 47            | KSD24CS135     |
+| NOOR QAZEEB N.    | 51            | KSD24CS142     |
+| ROMEO P ANTU      | 56            | KSD24CS156     |
+
 ## 🌟 About
 
 Eventify is a platform designed to connect event organisers and attendees. It allows organisers to create, manage, and promote their events, while users can browse, discover, and register for events happening around them. The application features role-based access control for different user types (User, Organiser, Admin).
