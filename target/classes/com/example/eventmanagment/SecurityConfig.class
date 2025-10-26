@@ -1,0 +1,44 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package com.example.eventmanagement;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+   public SecurityConfig() {
+   }
+
+   @Bean
+   public PasswordEncoder passwordEncoder() {
+      return new BCryptPasswordEncoder();
+   }
+
+   @Bean
+   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+      http.authorizeHttpRequests((auth) -> {
+         ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)auth.requestMatchers(new String[]{"/", "/login", "/register", "/css/**", "/js/**", "/h2-console/**"})).permitAll().requestMatchers(new String[]{"/showNewEventForm", "/saveEvent", "/editEvent/**", "/updateEvent/**", "/deleteEvent/**", "/organiser/dashboard"})).hasAuthority("ROLE_ORGANISER").requestMatchers(new String[]{"/admin/**"})).hasAuthority("ROLE_ADMIN").requestMatchers(new String[]{"/my-registrations", "/register-for-event/**"})).hasAuthority("ROLE_USER").requestMatchers(new String[]{"/profile"})).authenticated().anyRequest()).authenticated();
+      }).formLogin((form) -> {
+         ((FormLoginConfigurer)((FormLoginConfigurer)form.loginPage("/login").loginProcessingUrl("/login")).defaultSuccessUrl("/")).permitAll();
+      }).logout((logout) -> {
+         logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").permitAll();
+      }).csrf((csrf) -> {
+         csrf.ignoringRequestMatchers(new RequestMatcher[]{AntPathRequestMatcher.antMatcher("/h2-console/**")});
+      }).headers((headers) -> {
+         headers.frameOptions((frame) -> {
+            frame.sameOrigin();
+         });
+      });
+      return (SecurityFilterChain)http.build();
+   }
+}
