@@ -1,0 +1,34 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package com.example.eventmanagement;
+
+import java.util.Set;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+   private final UserRepository userRepository;
+   private final RoleRepository roleRepository;
+   private final PasswordEncoder passwordEncoder;
+
+   public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+      this.userRepository = userRepository;
+      this.roleRepository = roleRepository;
+      this.passwordEncoder = passwordEncoder;
+   }
+
+   public void registerUser(User user, String roleName) {
+      if (this.userRepository.existsByEmail(user.getEmail())) {
+         throw new RuntimeException("Error: Email is already in use!");
+      } else {
+         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+         Role userRole = this.roleRepository.findByName(roleName);
+         if (userRole == null) {
+            throw new RuntimeException("Error: Role not found.");
+         } else {
+            user.setRoles(Set.of(userRole));
+            this.userRepository.save(user);
+         }
+      }
+   }
+}
