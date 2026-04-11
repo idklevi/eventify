@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:replace="~{fragments/header :: page_head('Create Event')}" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <div th:replace="~{fragments/header :: navbar(activePage='create')}"></div>
+    
+    <div class="content-wrap">
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    
+                    <div class="form-card">
+                        <h2 class="text-center">Create Your Event</h2>
+                        <p class="text-center text-muted mb-4">Fill in the details for your new event.</p>
+                        
+                        <form action="#" th:action="@{/saveEvent}" th:object="${event}" method="POST">
+                            
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Event Name</label>
+                                <input type="text" th:field="*{name}" id="name" class="form-control" required>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="location" class="form-label">Location</label>
+                                    <input type="text" th:field="*{location}" id="location" class="form-control" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="date" class="form-label">Date</label>
+                                    <input type="date" th:field="*{date}" id="date" class="form-control" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea th:field="*{description}" id="description" class="form-control" rows="4"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="imageUrl" class="form-label">Image URL</label>
+                                <input type="text" th:field="*{imageUrl}" id="imageUrl" class="form-control">
+                            </div>
+
+                            <!-- === NEW PAYMENT FIELDS === -->
+                            <hr class="my-4">
+                            <h5 class="mb-3">Payment & Volunteers</h5>
+                            
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" th:field="*{paid}" id="isPaid"
+                                       onclick="togglePaymentFields()">
+                                <label class="form-check-label" for="isPaid"><b>This is a Paid Event</b></label>
+                            </div>
+
+                            <div id="paymentFields" class="row" style="display: none;">
+                                <div class="col-md-4 mb-3">
+                                    <label for="price" class="form-label">Price ($)</label>
+                                    <input type="number" th:field="*{price}" id="price" class="form-control" step="0.01" min="0">
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label for="paymentDetails" class="form-label">Payment Method/Link</label>
+                                    <input type="text" th:field="*{paymentDetails}" id="paymentDetails" class="form-control" placeholder="e.g., Stripe, PayPal, or Bank Info">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="volunteerInfo" class="form-label">Volunteer Information</label>
+                                <textarea th:field="*{volunteerInfo}" id="volunteerInfo" class="form-control" rows="3" placeholder="e.g., 'Need 5 volunteers for registration desk. Contact ...'"></textarea>
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <a th:href="@{/}" class="btn btn-secondary me-md-2">Cancel</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle-fill me-2"></i>Save Event
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="~{fragments/footer :: page_footer}"></div>
+    
+    <!-- JavaScript to show/hide payment fields -->
+    <script>
+        function togglePaymentFields() {
+            var checkBox = document.getElementById("isPaid");
+            var paymentFields = document.getElementById("paymentFields");
+            if (checkBox.checked == true){
+                paymentFields.style.display = "flex"; // "flex" works well with Bootstrap's row
+            } else {
+                paymentFields.style.display = "none";
+            }
+        }
+        // Run on page load in case of form validation error
+        togglePaymentFields();
+    </script>
+</body>
+</html>

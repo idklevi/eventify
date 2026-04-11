@@ -1,0 +1,6 @@
+2025-10-26 17:21:42.634051+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM REGISTRATIONS EVENT [*]USERS"; SQL statement:
+SELECT * FROM REGISTRATIONS EVENT USERS [42000-224]
+2025-10-26 17:21:45.281611+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM REGISTRATIONS EVENT [*]USERS USERS_ROLES ROLES"; SQL statement:
+SELECT * FROM REGISTRATIONS EVENT USERS USERS_ROLES ROLES [42000-224]

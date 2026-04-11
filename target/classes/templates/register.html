@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/header :: page_head('Sign Up')}" />
+    <style>
+        .register-container {
+            max-width: 550px;
+            margin-top: 5vh;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand logo" th:href="@{/}">
+                <i class="bi bi-calendar2-heart-fill"></i> Eventify
+            </a>
+        </div>
+    </nav>
+    
+    <div class="content-wrap">
+        <div class="container register-container">
+            <div class="form-card">
+                <h2 class="text-center">Create Your Account</h2>
+                <p class="text-center text-muted mb-4">Join Eventify today!</p>
+
+                <div th:if="${errorMessage}" class="alert alert-danger" role="alert"
+                     th:text="${errorMessage}">
+                </div>
+
+                <form th:action="@{/register}" th:object="${user}" method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" th:field="*{name}" id="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" th:field="*{email}" id="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" th:field="*{password}" id="password" class="form-control" required>
+                    </div>
+                    
+                    <!-- Role Selection -->
+                    <div class="mb-3">
+                        <label class="form-label">I am a...</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="role" id="roleUser" value="ROLE_USER" checked>
+                            <label class="form-check-label" for="roleUser">
+                                <b>User</b> (I want to browse and register for events)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="role" id="roleOrganiser" value="ROLE_ORGANISER">
+                            <label class="form-check-label" for="roleOrganiser">
+                                <b>Organiser</b> (I want to create and manage events)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                    </div>
+                </form>
+                <hr>
+                <div class="text-center">
+                    Already have an account? <a th:href="@{/login}">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="~{fragments/footer :: page_footer}"></div>
+</body>
+</html>
