@@ -1,0 +1,43 @@
+package com.example.eventmanagement.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "registrations",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "event_id"}))
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder
+public class Registration {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private RegistrationStatus status = RegistrationStatus.CONFIRMED;
+
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
+
+    @CreationTimestamp
+    @Column(name = "registration_time", updatable = false)
+    private LocalDateTime registrationTime;
+
+    public enum RegistrationStatus {
+        CONFIRMED, CANCELLED, WAITLISTED
+    }
+}
