@@ -1,0 +1,39 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+build/
+.vite/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Java / Spring Boot
+target/
+*.jar
+*.war
+*.class
+
+# Maven wrapper (keep these)
+!.mvn/wrapper/maven-wrapper.jar
+!mvnw
+!mvnw.cmd
+
+# H2 DB files (if any local)
+*.mv.db
+*.trace.db
