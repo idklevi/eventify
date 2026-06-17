@@ -1,0 +1,11 @@
+@layer utilities {
+  .event-card {
+    @apply p-4 rounded-lg shadow-sm;
+  }
+  .event-card-primary {
+    @apply bg-blue-600 text-white;
+  }
+  .event-card-hover {
+    @apply translate-y-0.5 shadow-lg;
+  }
+}
