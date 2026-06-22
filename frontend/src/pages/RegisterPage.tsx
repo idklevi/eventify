@@ -46,12 +46,12 @@ export default function RegisterPage() {
     <div className="w-full max-w-md">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-white">Create your account</h1>
-        <p className="text-brand-300 mt-2">Join thousands of event lovers</p>
+        <p className="text-slate-300 mt-2">Join thousands of event lovers</p>
       </div>
 
-      <div className="bg-white rounded-3xl p-8 shadow-modal">
+      <div className="glass-card p-8 shadow-modal border border-slate-800 bg-slate-900/40 backdrop-blur-md">
         {error && (
-          <div className="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 mb-6 text-sm">
+          <div className="flex items-center gap-3 bg-red-950/40 border border-red-900/50 text-red-400 rounded-xl px-4 py-3 mb-6 text-sm">
             <AlertCircle className="w-4 h-4 shrink-0" />
             {error}
           </div>
@@ -64,7 +64,7 @@ export default function RegisterPage() {
               <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input {...register('name')} className="input pl-10" placeholder="Jane Smith" />
             </div>
-            {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+            {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>}
           </div>
 
           <div>
@@ -73,7 +73,7 @@ export default function RegisterPage() {
               <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input {...register('email')} type="email" className="input pl-10" placeholder="you@example.com" />
             </div>
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+            {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
           </div>
 
           <div>
@@ -86,11 +86,11 @@ export default function RegisterPage() {
                 className="input pl-10 pr-10"
                 placeholder="Min. 6 characters"
               />
-              <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200">
                 {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+            {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>}
           </div>
 
           {/* Role selection */}
@@ -105,14 +105,14 @@ export default function RegisterPage() {
                   key={opt.value}
                   className={`relative flex flex-col gap-1 p-4 rounded-xl border-2 cursor-pointer transition-all
                     ${selectedRole === opt.value
-                      ? 'border-brand-600 bg-brand-50'
-                      : 'border-surface-200 hover:border-surface-300 bg-white'
+                      ? 'border-brand-500 bg-brand-950/40 text-brand-300'
+                      : 'border-slate-800 hover:border-slate-700 bg-slate-950/20 text-slate-300'
                     }`}
                 >
                   <input type="radio" {...register('role')} value={opt.value} className="sr-only" />
                   <span className="text-xl">{opt.emoji}</span>
-                  <span className="font-semibold text-sm text-slate-900">{opt.title}</span>
-                  <span className="text-xs text-slate-500">{opt.desc}</span>
+                  <span className="font-semibold text-sm text-white">{opt.title}</span>
+                  <span className="text-xs text-slate-400">{opt.desc}</span>
                   {selectedRole === opt.value && (
                     <div className="absolute top-3 right-3 w-5 h-5 bg-brand-600 rounded-full flex items-center justify-center">
                       <svg viewBox="0 0 12 10" className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth="2">
@@ -132,8 +132,8 @@ export default function RegisterPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-slate-500">
-          Already have an account? <Link to="/login" className="text-brand-600 font-semibold hover:underline">Sign in</Link>
+        <p className="mt-6 text-center text-sm text-slate-400">
+          Already have an account? <Link to="/login" className="text-brand-400 font-semibold hover:underline">Sign in</Link>
         </p>
       </div>
     </div>

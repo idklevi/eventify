@@ -10,7 +10,19 @@ const api = axios.create({
 // Request interceptor — attach JWT
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token')
+    let token = null
+    const authStorageStr = localStorage.getItem('auth-storage')
+    if (authStorageStr) {
+      try {
+        const parsed = JSON.parse(authStorageStr)
+        token = parsed?.state?.token
+      } catch (e) {
+        console.error('Failed to parse auth-storage token', e)
+      }
+    }
+    if (!token) {
+      token = localStorage.getItem('token')
+    }
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -29,6 +41,7 @@ api.interceptors.response.use(
     if (status === 401) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+      localStorage.removeItem('auth-storage')
       // Only redirect if not already on auth pages
       if (!window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/register')) {
         window.location.href = '/login'

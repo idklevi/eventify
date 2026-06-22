@@ -5,6 +5,7 @@ export interface AuthUser {
   email: string
   roles: string[]
   token: string
+  profileImageUrl?: string
 }
 
 export interface LoginRequest {
